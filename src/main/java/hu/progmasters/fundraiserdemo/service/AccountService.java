@@ -4,6 +4,7 @@ import hu.progmasters.fundraiserdemo.domain.Account;
 import hu.progmasters.fundraiserdemo.dto.AccountDetails;
 import hu.progmasters.fundraiserdemo.dto.AccountRegistrationCommand;
 import hu.progmasters.fundraiserdemo.dto.TargetAccountOption;
+import hu.progmasters.fundraiserdemo.exceptionhandling.AccountNotFoundByIdException;
 import hu.progmasters.fundraiserdemo.exceptionhandling.AccountNotFoundByIpAddressException;
 import hu.progmasters.fundraiserdemo.exceptionhandling.IpAddressAlreadyInUseException;
 import hu.progmasters.fundraiserdemo.repository.AccountRepository;
@@ -64,5 +65,13 @@ public class AccountService {
 
     public List<Account> getAllAccountsExceptMine(String remoteAddr) {
         return accountRepository.getAllAccountsExceptMine(remoteAddr);
+    }
+
+    public Account getAccountById(Long target) {
+        Optional<Account> accountOptional = accountRepository.findById(target);
+        if (accountOptional.isEmpty()) {
+            throw new AccountNotFoundByIdException(target);
+        }
+        return accountOptional.get();
     }
 }

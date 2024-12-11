@@ -1,5 +1,6 @@
 package hu.progmasters.fundraiserdemo.controller;
 
+import hu.progmasters.fundraiserdemo.dto.TransferCreateCommand;
 import hu.progmasters.fundraiserdemo.dto.TransferInitData;
 import hu.progmasters.fundraiserdemo.dto.TransferListItem;
 import hu.progmasters.fundraiserdemo.service.TransferService;
@@ -8,11 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -40,5 +40,12 @@ public class TransferController {
         TransferInitData transferInitData = transferService.getNewTransferData(request.getRemoteAddr());
         return new ResponseEntity<>(transferInitData, HttpStatus.OK);
 
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> saveTransfer(@Valid @RequestBody TransferCreateCommand command, HttpServletRequest request) {
+        log.info("http req POST /api/transfers/saveTransfer with ipAddress: " + request.getRemoteAddr() + "and data: " + command.toString());
+        transferService.saveTransfer(command, request.getRemoteAddr());
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

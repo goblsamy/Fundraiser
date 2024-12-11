@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
@@ -39,6 +38,22 @@ public class GlobalExceptionHandler {
     public ResponseEntity<List<ValidationError>> handleAccountNotFoundByIpAddressException(AccountNotFoundByIpAddressException exception) {
         ValidationError validationError = new ValidationError("ipAddress",
                 "Account not found with Ip address: " + exception.getIpAddress());
+        log.error("Error in validation: " + validationError.getField() + ": " + validationError.getErrorMessage());
+        return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccountNotFoundByIdException.class)
+    public ResponseEntity<List<ValidationError>> handleAccountNotFoundByIdException(AccountNotFoundByIdException exception) {
+        ValidationError validationError = new ValidationError("Id",
+                "Account not found with Id: " + exception.getAccountId());
+        log.error("Error in validation: " + validationError.getField() + ": " + validationError.getErrorMessage());
+        return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InsufficientCreditException.class)
+    public ResponseEntity<List<ValidationError>> handleInsufficientCreditException(InsufficientCreditException exception) {
+        ValidationError validationError = new ValidationError("Amount",
+                "Insufficient funds: " + exception.getAmount());
         log.error("Error in validation: " + validationError.getField() + ": " + validationError.getErrorMessage());
         return new ResponseEntity<>(List.of(validationError), HttpStatus.BAD_REQUEST);
     }
