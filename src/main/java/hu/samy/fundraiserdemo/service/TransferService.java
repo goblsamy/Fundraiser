@@ -31,9 +31,7 @@ public class TransferService {
     }
 
     public List<TransferListItem> getAllTransfers() {
-        return transferRepository.findAll().stream()
-                .map(TransferListItemMapper::transferListItemMap)
-                .collect(Collectors.toList());
+        return transferRepository.findAllTransfers();
     }
 
     public TransferInitData getNewTransferData(String remoteAddr) {

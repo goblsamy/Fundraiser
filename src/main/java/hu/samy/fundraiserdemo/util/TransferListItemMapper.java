@@ -9,7 +9,7 @@ public class TransferListItemMapper {
         TransferListItem transferListItem = new TransferListItem();
         transferListItem.setId(transfer.getId());
         transferListItem.setAmount(transfer.getAmount());
-        transferListItem.setTimeStamp(transfer.getTimestamp().toString());
+        transferListItem.setTimestamp(transfer.getTimestamp().toString());
         transferListItem.setSourceName(transfer.getSource().getUsername());
         transferListItem.setTargetName(transfer.getTarget().getUsername());
         return transferListItem;

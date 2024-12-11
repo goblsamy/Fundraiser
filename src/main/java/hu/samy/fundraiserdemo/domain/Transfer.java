@@ -1,5 +1,6 @@
 package hu.samy.fundraiserdemo.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "transfer")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Transfer {
 
     @Id
